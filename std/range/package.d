@@ -198,6 +198,7 @@ Iterates a bidirectional range backwards. The original range can be
 accessed by using the $(D source) property. Applying retro twice to
 the same range yields the original range.
 
+
 Params:
     r = the bidirectional range to iterate backwards
 
@@ -5772,6 +5773,16 @@ struct FrontTransversal(Ror,
                 enforce(e.length == commonLength);
             }
         }
+        static if (opt == TransverseOptions.assumeNotJagged ||
+                   opt == TransverseOptions.enforceNotJagged)
+        {
+            if (_input.empty) return;
+            immutable commonEmpty = _input.front.empty;
+            while (!_input.empty && commonEmpty)
+            {
+                _input.popFront();
+            }
+        }
     }
 
 /**
@@ -6007,6 +6018,14 @@ FrontTransversal!(RangeOfRanges, opt) frontTransversal(
             }
         }
     }
+}
+
+// Issue 16442
+@safe unittest
+{
+    int[][] arr = [[], []];
+    auto ft = frontTransversal!(TransverseOptions.assumeNotJagged)(arr);
+    assert(ft.empty);
 }
 
 /**
