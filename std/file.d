@@ -452,7 +452,8 @@ S readText(S = string, R)(auto ref R name)
 }
 
 /*********************************************
-Write $(D buffer) to file $(D name).
+Write $(D buffer) to file $(D name). Creates a new file
+if the target does not exist.
 
 Params:
     name = string or range of characters representing the file _name
@@ -498,7 +499,8 @@ void write(R)(auto ref R name, const void[] buffer)
 }
 
 /*********************************************
-Appends $(D buffer) to file $(D name).
+Appends $(D buffer) to file $(D name). Creates a new file
+if the target does not exist.
 
 Params:
     name = string or range of characters representing the file _name
